@@ -58,16 +58,16 @@ const PaypalCheckoutButton = ({ order }) => {
       })
       .catch(error => {
         console.log(error);
-	      alert('Ocurrió un error al procesar el pago con Paypal');
+        alert('Ocurrió un error al procesar el pago con Paypal');
       });
   };
 
   const onError = (error) => {
-    alert ('El pago con PayPal no fue realizado, vuelva a intentarlo.' );
+    alert('El pago con PayPal no fue realizado, vuelva a intentarlo.');
   };
 
   const onCancel = (data, actions) => {
-    alert( 'El pago con PayPal no fue realizado, el usuario canceló el proceso.' );
+    alert('El pago con PayPal no fue realizado, el usuario canceló el proceso.');
   };
 
 

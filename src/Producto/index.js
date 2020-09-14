@@ -1,27 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { Card, Icon } from "semantic-ui-react";
-import DetalleProducto from "./Detalle";
-import AgregarProducto from "./Agregar";
+import ProductDetail from "./ProductDetail";
+import AddProduct from "./AddProduct";
 import PaypalCheckoutButton from "../Components/ButtonPaypal";
 
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-
-const Producto = () => {
+const Product = () => {
   //https://localhost:44325/api/producto
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  const traerProductos = () => {
+  const getProduct = () => {
     var requestOptions = {
       method: 'GET',
       redirect: 'follow'
     };
 
-    fetch("https://localhost:44325/api/producto", requestOptions)
+    fetch(`${BASE_URL}/producto`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log(result)
         setData(result);
         setLoading(false);
       })
@@ -33,7 +32,7 @@ const Producto = () => {
   };
 
   useEffect(() => {
-    traerProductos();
+    getProduct();
   }, []);
 
   if (loading) return "Cargando...";
@@ -66,23 +65,22 @@ const Producto = () => {
       <h1>Lista de productos</h1>
       <br />
       <br />
-      <AgregarProducto refreshProducto={traerProductos} />
-
+      <AddProduct refreshProduct={getProduct} />
       <PaypalCheckoutButton order={order} />
       <br />
       <br />
       <Card.Group>
         {
-          data.map(producto =>
-            <Card key={producto.idProducto}>
-              <Card.Content header={producto.nombre} />
-              <Card.Content description={producto.precio} />
+          data.map(product =>
+            <Card key={product.idProducto}>
+              <Card.Content header={product.nombre} />
+              <Card.Content description={product.precio} />
               <Card.Content extra>
-                <DetalleProducto
-                  nombre={producto.nombre}
-                  idProducto={producto.idProducto}
-                  precio={producto.precio}
-                  refreshProducto={traerProductos}
+                <ProductDetail
+                  name={product.nombre}
+                  idProduct={product.idProducto}
+                  amount={product.precio}
+                  refreshProduct={getProduct}
                   trigger={<Icon name='arrow alternate circle right' />} />
               </Card.Content>
             </Card>
@@ -93,4 +91,4 @@ const Producto = () => {
   );
 };
 
-export default Producto;
+export default Product;
